@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime js
+
+<PageTitle>BlazorApp</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4 d-flex justify-content-between align-items-center" id="navTop">
+            <div class=" my-2">
+                Click here to switch themes
+                <button @onclick="SwapTheme" Primary="true" class="btn btn-primary">@SetThemeName Mode</button>
+            </div>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+@code {
+    bool isDark;
+    string SetThemeName => isDark ? "dark" : "light";
+    async Task SwapTheme()
+    {
+        isDark = !isDark;
+        await js.InvokeVoidAsync("themeChooser.setTheme", SetThemeName);
+    }
+}
